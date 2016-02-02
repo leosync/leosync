@@ -15,11 +15,12 @@
 package cmd
 
 import (
-	"fmt"
 	"bufio"
-	"os"
 	"log"
+	"os"
 	"strings"
+
+	"github.com/igrybkov/leosync/sources/lingualeo"
 
 	"github.com/spf13/cobra"
 )
@@ -38,10 +39,14 @@ var importFileListCmd = &cobra.Command{
 		defer file.Close()
 
 		scanner := bufio.NewScanner(file)
-		var word string;
+		var word string
+		leoClient := lingualeo.GetClient()
+
 		for scanner.Scan() {
 			word = strings.TrimSpace(scanner.Text())
-			fmt.Println(word)
+			translations := leoClient.GetTranslations(word)
+			leoClient.AddWord(word, translations.Translates[0].Value)
+			log.Println("Imported: " + word)
 		}
 
 		if err := scanner.Err(); err != nil {

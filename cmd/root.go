@@ -24,9 +24,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gosuri/cmdns"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/gosuri/cmdns"
 )
 
 var cfgFile string
@@ -35,10 +35,10 @@ var cfgFile string
 var leoSync = &cobra.Command{
 	Use:   "leosync",
 	Short: "LeoSync is an app to sync words and translations to/from LinguaLeo",
-	Long: `LeoSync is an app to sync words and translations to/from LinguaLeo`,
-// Uncomment the following line if your bare application
-// has an action associated with it:
-//	Run: func(cmd *cobra.Command, args []string) { },
+	Long:  `LeoSync is an app to sync words and translations to/from LinguaLeo`,
+	// Uncomment the following line if your bare application
+	// has an action associated with it:
+	//	Run: func(cmd *cobra.Command, args []string) { },
 }
 
 // Execute adds all child commands to the root command sets flags appropriately.
@@ -49,10 +49,6 @@ func Execute() {
 		os.Exit(-1)
 	}
 }
-
-//func GenMarkdownTree(path string) {
-//
-//}
 
 func init() {
 	cobra.OnInitialize(initConfig)
@@ -74,10 +70,13 @@ func initConfig() {
 	if cfgFile != "" { // enable ability to specify config file via flag
 		viper.SetConfigFile(cfgFile)
 	}
-
 	viper.SetConfigName(".leosync") // name of config file (without extension)
-	viper.AddConfigPath("$HOME")  // adding home directory as first search path
-	viper.AutomaticEnv()          // read in environment variables that match
+	viper.AddConfigPath("$HOME")    // adding home directory as first search path
+	viper.AddConfigPath(".")        // name of config file (without extension)
+	viper.AutomaticEnv()            // read in environment variables that match
+
+	//	leoSync.Flags().Int("port", 1138, "Port to run Application server on")
+	//	viper.BindPFlag("port", leoSync.Flags().Lookup("port"))
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
