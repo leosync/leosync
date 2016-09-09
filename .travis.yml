@@ -3,4 +3,16 @@ language: go
 go:
   - 1.7
 
-script: make check
+sudo: required
+services:
+  - docker
+
+before_install:
+  - go get github.com/karalabe/xgo
+
+script:
+  - make check
+  - docker pull karalabe/xgo-latest
+  - mkdir dist
+  - cd dist
+  - xgo -go 1.7.1 -v --targets='windows/*,darwin/*,linux/*' github.com/igrybkov/leosync
