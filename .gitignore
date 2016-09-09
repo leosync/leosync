@@ -4,7 +4,7 @@
 *.o
 *.a
 *.so
-/bin/*
+/dist/
 
 # Folders
 _obj
