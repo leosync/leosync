@@ -12,7 +12,4 @@ before_install:
 
 script:
   - make check
-  - docker pull karalabe/xgo-latest
-  - mkdir dist
-  - cd dist
-  - xgo -go latest -v --targets='windows-6.1/amd64,windows-6.1/386,windows-6.1/arm-7,darwin-10.9/amd64,darwin-10.9/386,darwin-10.9/arm-7,linux/amd64,linux/386,linux/arm-7' github.com/igrybkov/leosync
+  - make build-multiarch

@@ -1,4 +1,4 @@
-.PHONY: getdeps build doc check verifiers deadcode spelling fmt interfacer errcheck gocyclo lint run test vet
+.PHONY: getdeps build build-multiarch doc check verifiers deadcode spelling fmt interfacer errcheck gocyclo lint run test vet
 
 default: build
 
@@ -12,6 +12,12 @@ getdeps:
 
 build: getdeps verifiers test
 	go build -v -o ./bin/leosync .
+
+build-multiarch: check
+	go get github.com/karalabe/xgo
+	docker pull karalabe/xgo-latest
+	mkdir -p dist
+	xgo -dest dist -go latest -v --targets='windows-6.1/amd64,windows-6.1/386,windows-6.1/arm-7,darwin-10.9/amd64,darwin-10.9/386,darwin-10.9/arm-7,linux/amd64,linux/386,linux/arm-7' github.com/igrybkov/leosync
 
 doc:
 	godoc -http=:6060 -index
