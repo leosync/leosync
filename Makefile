@@ -10,14 +10,14 @@ getdeps:
 	@go get github.com/mvdan/interfacer/cmd/interfacer && echo "Installed interfacer:"
 	@go get github.com/kisielk/errcheck && echo "Installed errcheck:"
 
-build: getdeps verifiers test
+build:
+	mkdir -p ./bin/
 	go build -v -o ./bin/leosync .
 
-build-multiarch: check
+build-multiarch:
 	go get github.com/karalabe/xgo
-	docker pull karalabe/xgo-latest
 	mkdir -p dist
-	xgo -dest dist -go latest -v --targets='windows-6.1/amd64,windows-6.1/386,windows-6.1/arm-7,darwin-10.9/amd64,darwin-10.9/386,darwin-10.9/arm-7,linux/amd64,linux/386,linux/arm-7' github.com/igrybkov/leosync
+	xgo -dest ./dist/ -go latest -v --targets='windows-6.1/amd64,windows-6.1/386,windows-6.1/arm-7,darwin-10.9/amd64,darwin-10.9/386,darwin-10.9/arm-7,linux/amd64,linux/386,linux/arm-7' ./
 
 doc:
 	godoc -http=:6060 -index
@@ -30,7 +30,7 @@ deadcode:
 	@deadcode
 
 spelling:
-	@@find . -type f -name '*.go' -not -path "./vendor/*" | xargs -L1 misspell -error
+	@find . -type f -name '*.go' -not -path "./vendor/*" | xargs -L1 misspell -error
 
 # http://golang.org/cmd/go/#hdr-Run_gofmt_on_package_sources
 fmt:

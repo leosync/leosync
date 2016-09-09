@@ -3,27 +3,20 @@ language: go
 go:
   - 1.7
 
-sudo: required
 services:
   - docker
 
 script:
   - make check
-
 before_deploy:
   - make build-multiarch
+  - sudo chown -R $USER:$USER ./dist/
 deploy:
   provider: releases
   api_key:
     secure: M+cj8KfHXLC9GBE0cPrSB/RTAkxnpl5RlHNtna6w62YfzHlUbIusyKC+GmirbRmWGyQdjYbT5CT+DxTHCPbUnSFNJLJrxCxkir6Th0d3GzHSTc9vtfhJWHYQd3rmtUL0gsBi2Sy8j5cvJ2ftM2N2Ioj2xmt9HVsVLDFjvoiW/nhEXhbQUTOCRiZGXdmHobbmguCG5wpM5QWhMcRnMK8iB5PJPNAQIqzgg7nr8KPk/0ov7O5f7nN3pIUgGeQvgzJv8YuByLA0EEGomiFSp8Tggz6R+rukyKgO90jqML3Gb23JN0K+R3Wmk9phdw9RkNPDCrWLGrjcaBNUw3yZU4/m5WX/kmlSqog0nxNoeSFP0X2VjPeYSXSPpgrwdNXq29JT/UYsytCbGI5tBYF1JhAny2bq2zYF/9OuL0ObWgzB/Ierri7mMdjQGZfMjoVWvdlAsX/b30PaoZrWrAl1LjlAHkXUJYV9J6/xMkhWesAgLad65bPdzMgn0iiSNWrDSi2ODZKIsaQvCkH2U7OrfaRCW2zsFRNcmLLy5ntcyx+3YGi1163EtXlg9xos2UQExVd1yHuKtK+6fkQuTky/EQMHHLVbCs1Bie3OMRu1Vvu1kCIOgsU3pUMUGO2e8I8o4FCIwhUSfn3bvMUK9Vl1M+7WTOJ+8JXFFCfMwPsdxubUkuw=
-  file:
-    - dist/leosync-darwin-10.9-386
-    - dist/leosync-darwin-10.9-amd64
-    - dist/leosync-linux-386
-    - dist/leosync-linux-amd64
-    - dist/leosync-linux-arm-7
-    - dist/leosync-windows-6.1-386.exe
-    - dist/leosync-windows-6.1-amd64.exe
+  file_glob: true
+  file: "dist/leosync-*"
   on:
     repo: igrybkov/leosync
     tags: true
