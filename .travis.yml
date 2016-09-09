@@ -15,4 +15,4 @@ script:
   - docker pull karalabe/xgo-latest
   - mkdir dist
   - cd dist
-  - xgo -go 1.7.1 -v --targets='windows/*,darwin/*,linux/*' github.com/igrybkov/leosync
+  - xgo -go 1.7.x -v --targets='windows/*,darwin/*,linux/*' github.com/igrybkov/leosync
